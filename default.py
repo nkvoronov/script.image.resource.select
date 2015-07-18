@@ -18,10 +18,10 @@ def log(txt):
 
 class Main:
     def __init__(self):
-        TYPE = self._parse_argv()
-        if TYPE:
+        TYPE, PROP = self._parse_argv()
+        if TYPE and PROP:
             ITEMS = self._get_addons(TYPE)
-            self._select(ITEMS, TYPE)
+            self._select(ITEMS, TYPE, PROP)
 
     def _parse_argv(self):
         TYPE = None
@@ -31,7 +31,8 @@ class Main:
             params = {}
         log('params: %s' % params)
         TYPE = params.get('type', '')
-        return TYPE
+        PROP = params.get('property', '')
+        return TYPE, PROP
 
     def _get_addons(self, TYPE):
         listitems = []
@@ -48,8 +49,8 @@ class Main:
                     listitems.append(listitem)
         return listitems
 
-    def _select(self, addonlist, category):
-        w = Gui('DialogSelect.xml', __cwd__, listing=addonlist, category=category)
+    def _select(self, addonlist, category, string):
+        w = Gui('DialogSelect.xml', __cwd__, listing=addonlist, category=category, string=string)
         w.doModal()
         del w
 
@@ -58,6 +59,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         xbmcgui.WindowXMLDialog.__init__(self)
         self.listing = kwargs.get('listing')
         self.type = kwargs.get('category')
+        self.property = kwargs.get('string')
 
     def onInit(self):
         self.container = self.getControl(6)
@@ -79,13 +81,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         if controlID == 6:
             num = self.container.getSelectedPosition()
             if num == 0:
-                xbmc.executebuiltin('Skin.Reset(%s)' % (self.type + '.name'))
-                xbmc.executebuiltin('Skin.Reset(%s)' % (self.type + '.path'))
+                xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.name'))
+                xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.path'))
             else:
                 name = self.container.getSelectedItem().getLabel()
                 path = self.container.getSelectedItem().getLabel2()
-                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.type + '.name'), name))
-                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.type + '.path'), 'resource://%s/' % path))
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.name'), name))
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.path'), 'resource://%s/' % path))
             xbmc.sleep(100)
             self.close()
         elif controlID == 5:
