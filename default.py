@@ -79,10 +79,13 @@ class Gui(xbmcgui.WindowXMLDialog):
         if controlID == 6:
             num = self.container.getSelectedPosition()
             if num == 0:
-                xbmc.executebuiltin('Skin.Reset(%s)' % self.type)
+                xbmc.executebuiltin('Skin.Reset(%s)' % self.type + '.name')
+                xbmc.executebuiltin('Skin.Reset(%s)' % self.type + '.path')
             else:
+                name = self.container.getSelectedItem().getLabel()
                 path = self.container.getSelectedItem().getLabel2()
-                xbmc.executebuiltin('Skin.SetString(%s,%s)' % (self.type, 'resource://%s/' % path))
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % (self.type + '.name', name))
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % (self.type + '.path', 'resource://%s/' % path))
             xbmc.sleep(100)
             self.close()
         elif controlID == 5:

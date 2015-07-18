@@ -7,11 +7,15 @@ If you run the script like this, it will open a select dialog with all installed
 The first item in the list (none) can be used to remove the current mapping.
 The last item in the list (get more..) will allow users to install additional image resource addons.
 
-After selecting one, the script will set the following skin string: Foo
+After selecting one, the script will set the following skin strings: 
+Foo.name
+Foo.path
 
-You can now use $INFO[Skin.String(Foo)] to access the images inside the image resource addon.
+You can now use $INFO[Skin.String(Foo.path)] to access the images inside the image resource addon
+and $INFO[Skin.String(Foo.name)] to display the name of the selected addon.
 
 
 example usage:
 - RunScript(script.image.resource.select,type=resource.images.studios)
-- $INFO[Skin.String(resource.images.studios)]
+- $INFO[Skin.String(resource.images.studios.name)]
+- $INFO[Skin.String(resource.images.studios.path)]
