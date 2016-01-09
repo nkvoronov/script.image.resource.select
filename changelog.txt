@@ -1,3 +1,9 @@
+v1.0.1
+- change none label to skin default
+
+v1.0.0
+- remove simplejson support
+
 v0.0.7
 - cosmetics
 

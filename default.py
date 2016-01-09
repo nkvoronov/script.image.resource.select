@@ -1,9 +1,6 @@
 import sys
 import xbmc, xbmcgui, xbmcaddon
-if sys.version_info < (2, 7):
-    import simplejson
-else:
-    import json as simplejson
+import json
 
 ADDON        = xbmcaddon.Addon()
 ADDONID      = ADDON.getAddonInfo('id')
@@ -40,7 +37,7 @@ class Main:
         listitems = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "thumbnail"]}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
-        json_response = simplejson.loads(json_query)
+        json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('addons'):
             for item in json_response['result']['addons']:
                 if item['addonid'].startswith(TYPE):
@@ -69,7 +66,7 @@ class Gui(xbmcgui.WindowXMLDialog):
         self.getControl(3).setVisible(False)
         self.getControl(1).setLabel(xbmc.getLocalizedString(20464) % xbmc.getLocalizedString(536))
         self.button.setLabel(xbmc.getLocalizedString(21452))
-        listitem = xbmcgui.ListItem(label=xbmc.getLocalizedString(231), iconImage='DefaultAddonNone.png')
+        listitem = xbmcgui.ListItem(label=xbmc.getLocalizedString(15109), iconImage='DefaultAddon.png')
         self.container.addItem(listitem)
         self.container.addItems(self.listing)
         self.setFocus(self.container)
