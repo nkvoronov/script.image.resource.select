@@ -63,9 +63,11 @@ class Gui(xbmcgui.WindowXMLDialog):
     def onInit(self):
         self.container = self.getControl(6)
         self.button = self.getControl(5)
+        self.cancel = self.getControl(7)
         self.getControl(3).setVisible(False)
         self.getControl(1).setLabel(xbmc.getLocalizedString(20464) % xbmc.getLocalizedString(536))
         self.button.setLabel(xbmc.getLocalizedString(21452))
+        self.cancel.setLabel(xbmc.getLocalizedString(222))
         listitem = xbmcgui.ListItem(label=xbmc.getLocalizedString(15109), iconImage='DefaultAddon.png')
         self.container.addItem(listitem)
         self.container.addItems(self.listing)
@@ -96,6 +98,8 @@ class Gui(xbmcgui.WindowXMLDialog):
         elif controlID == 5:
             xbmc.executebuiltin('ActivateWindow(AddonBrowser, addons://repository.xbmc.org/kodi.resource.images/)')
             xbmc.sleep(100)
+            self.close()
+        elif controlID == 7:
             self.close()
 
     def onFocus(self, controlID):

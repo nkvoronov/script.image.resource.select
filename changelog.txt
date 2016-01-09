@@ -1,5 +1,6 @@
 v1.0.1
 - change none label to skin default
+- add cancel button
 
 v1.0.0
 - remove simplejson support
