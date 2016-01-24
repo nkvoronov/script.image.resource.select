@@ -1,13 +1,13 @@
-import sys
-import xbmc, xbmcgui, xbmcaddon
+import sys, os
+import xbmc, xbmcgui, xbmcaddon, xbmcvfs
 import json
+from xml.dom.minidom import parseString
+from operator import itemgetter
 
 ADDON        = xbmcaddon.Addon()
 ADDONID      = ADDON.getAddonInfo('id')
 ADDONVERSION = ADDON.getAddonInfo('version')
 CWD          = ADDON.getAddonInfo('path').decode('utf-8')
-
-MULTI = ('resource.images.weatherfanart.multi', 'resource.images.weathericons.animated')
 
 def log(txt):
     if isinstance (txt,str):
@@ -35,18 +35,36 @@ class Main:
 
     def _get_addons(self, TYPE):
         listitems = []
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "thumbnail"]}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "thumbnail", "path"]}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('addons'):
-            for item in json_response['result']['addons']:
+            addons = json_response['result']['addons']
+            for item in sorted(addons, key=itemgetter('name')):
                 if item['addonid'].startswith(TYPE):
                     name = item['name']
                     icon = item['thumbnail']
-                    path = item['addonid']
-                    listitem = xbmcgui.ListItem(label=name, label2=path, iconImage='DefaultAddonImages.png', thumbnailImage=icon)
+                    addonid = item['addonid']
+                    path = item['path']
+                    extension, subfolders = self._get_data(path)
+                    listitem = xbmcgui.ListItem(label=name, label2=addonid, iconImage='DefaultAddonImages.png', thumbnailImage=icon)
+                    listitem.setProperty('extension', extension)
+                    listitem.setProperty('subfolders', subfolders)
                     listitems.append(listitem)
         return listitems
+
+    def _get_data(self, path):
+        infoxml = os.path.join(path, 'info.xml')
+        try:
+            info = xbmcvfs.File(infoxml)
+            data = info.read()
+            info.close()
+            xmldata = parseString(data)
+            extension = xmldata.documentElement.getElementsByTagName('format')[0].childNodes[0].data
+            subfolders = xmldata.documentElement.getElementsByTagName('subfolders')[0].childNodes[0].data
+            return extension, subfolders
+        except:
+            return 'png', 'false'
 
     def _select(self, addonlist, category, string):
         w = Gui('DialogSelect.xml', CWD, listing=addonlist, category=category, string=string)
@@ -83,13 +101,18 @@ class Gui(xbmcgui.WindowXMLDialog):
             if num == 0:
                 xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.name'))
                 xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.path'))
+                xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.ext'))
                 xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.multi'))
             else:
-                name = self.container.getSelectedItem().getLabel()
-                path = self.container.getSelectedItem().getLabel2()
+                item = self.container.getSelectedItem()
+                name = item.getLabel()
+                addonid = item.getLabel2()
+                extension = '.%s' % item.getProperty('extension')
+                subfolders = item.getProperty('subfolders')
                 xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.name'), name))
-                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.path'), 'resource://%s/' % path))
-                if path in MULTI:
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.path'), 'resource://%s/' % addonid))
+                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((self.property + '.ext'), extension))
+                if subfolders == 'true':
                     xbmc.executebuiltin('Skin.SetBool(%s)' % (self.property + '.multi'))
                 else:
                     xbmc.executebuiltin('Skin.Reset(%s)' % (self.property + '.multi'))
