@@ -35,7 +35,7 @@ class Main:
 
     def _get_addons(self, TYPE):
         listitems = []
-        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "thumbnail", "path"]}, "id": 1}')
+        json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "summary", "thumbnail", "path"]}, "id": 1}')
         json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
         if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('addons'):
@@ -46,10 +46,12 @@ class Main:
                     icon = item['thumbnail']
                     addonid = item['addonid']
                     path = item['path']
+                    summary = item['summary']
                     extension, subfolders = self._get_data(path)
                     listitem = xbmcgui.ListItem(label=name, label2=addonid, iconImage='DefaultAddonImages.png', thumbnailImage=icon)
                     listitem.setProperty('extension', extension)
                     listitem.setProperty('subfolders', subfolders)
+                    listitem.setProperty('Addon.Summary', summary)
                     listitems.append(listitem)
         return listitems
 
