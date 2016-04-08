@@ -3,6 +3,7 @@ v1.0.1
 
 v1.0.0
 - remove simplejson support
+- add cancel button
 
 v0.1.0
 - fix typo in readme
