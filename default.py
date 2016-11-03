@@ -91,11 +91,12 @@ class Main:
                 subfolders = item.getProperty('subfolders')
                 xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((string + '.name'), name))
                 xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((string + '.path'), 'resource://%s/' % addonid))
-                xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((string + '.ext'), extension))
                 if subfolders == 'true':
                     xbmc.executebuiltin('Skin.SetBool(%s)' % (string + '.multi'))
+                    xbmc.executebuiltin('Skin.Reset(%s,%s)' % (string + '.ext'))
                 else:
                     xbmc.executebuiltin('Skin.Reset(%s)' % (string + '.multi'))
+                    xbmc.executebuiltin('Skin.SetString(%s,%s)' % ((string + '.ext'), extension))
 
 if (__name__ == '__main__'):
     log('script version %s started' % ADDONVERSION)
