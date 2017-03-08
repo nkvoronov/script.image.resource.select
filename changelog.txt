@@ -1,4 +1,4 @@
-v3.0.1
+v2.0.2
 - required changes for kodi leia
 
 v2.0.1
