@@ -1,3 +1,6 @@
+v3.0.0
+- required changes for python 3
+
 v2.0.2
 - required changes for kodi leia
 

@@ -7,13 +7,11 @@ from operator import itemgetter
 ADDON        = xbmcaddon.Addon()
 ADDONID      = ADDON.getAddonInfo('id')
 ADDONVERSION = ADDON.getAddonInfo('version')
-CWD          = ADDON.getAddonInfo('path').decode('utf-8')
+CWD          = ADDON.getAddonInfo('path')
 
 def log(txt):
-    if isinstance (txt,str):
-        txt = txt.decode('utf-8')
-    message = u'%s: %s' % (ADDONID, txt)
-    xbmc.log(msg=message.encode('utf-8'), level=xbmc.LOGDEBUG)
+    message = '%s: %s' % (ADDONID, txt)
+    xbmc.log(msg=message, level=xbmc.LOGDEBUG)
 
 class Main:
     def __init__(self):
@@ -36,9 +34,8 @@ class Main:
     def _get_addons(self, TYPE):
         listitems = []
         json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"type": "kodi.resource.images", "properties": ["name", "summary", "thumbnail", "path"]}, "id": 1}')
-        json_query = unicode(json_query, 'utf-8', errors='ignore')
         json_response = json.loads(json_query)
-        if json_response.has_key('result') and (json_response['result'] != None) and json_response['result'].has_key('addons'):
+        if 'result' in json_response and (json_response['result'] != None) and 'addons' in json_response['result']:
             addons = json_response['result']['addons']
             for item in sorted(addons, key=itemgetter('name')):
                 if item['addonid'].startswith(TYPE):
