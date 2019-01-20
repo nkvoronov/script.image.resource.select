@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.image.resource.select" name="Image Resource Select Addon" version="2.0.3" provider-name="ronie">
+<addon id="script.image.resource.select" name="Image Resource Select Addon" version="2.0.4" provider-name="ronie">
 	<requires>
 		<import addon="xbmc.python" version="2.25.0"/>
 	</requires>
@@ -11,8 +11,6 @@
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 2</license>
 		<forum>http://forum.kodi.tv/showthread.php?tid=239558</forum>
-		<website></website>
-		<email></email>
 		<source>https://gitlab.com/ronie/script.image.resource.select</source>
 	</extension>
 </addon>
