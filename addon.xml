@@ -10,7 +10,7 @@
 		<language></language>
 		<platform>all</platform>
 		<license>GNU GENERAL PUBLIC LICENSE Version 2</license>
-		<forum>http://forum.kodi.tv/showthread.php?tid=239558</forum>
+		<forum>https://forum.kodi.tv/showthread.php?tid=239558</forum>
 		<source>https://gitlab.com/ronie/script.image.resource.select</source>
 	</extension>
 </addon>
