@@ -12,5 +12,8 @@
 		<license>GNU GENERAL PUBLIC LICENSE Version 2</license>
 		<forum>https://forum.kodi.tv/showthread.php?tid=239558</forum>
 		<source>https://gitlab.com/ronie/script.image.resource.select</source>
+		<assets>
+			<icon>resources/icon.png</icon>
+		</assets>
 	</extension>
 </addon>
