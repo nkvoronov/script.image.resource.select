@@ -1,13 +1,17 @@
-import sys, os
-import xbmc, xbmcgui, xbmcaddon, xbmcvfs
 import json
-from xml.dom.minidom import parseString
+import os
+import sys
+import xbmc
+import xbmcaddon
+import xbmcgui
+import xbmcvfs
 from operator import itemgetter
+from xml.dom.minidom import parseString
 
-ADDON        = xbmcaddon.Addon()
-ADDONID      = ADDON.getAddonInfo('id')
+ADDON = xbmcaddon.Addon()
+ADDONID = ADDON.getAddonInfo('id')
 ADDONVERSION = ADDON.getAddonInfo('version')
-CWD          = ADDON.getAddonInfo('path')
+CWD = ADDON.getAddonInfo('path')
 
 def log(txt):
     message = '%s: %s' % (ADDONID, txt)
