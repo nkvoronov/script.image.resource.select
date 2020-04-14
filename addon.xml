@@ -14,5 +14,6 @@
 		<assets>
 			<icon>resources/icon.png</icon>
 		</assets>
+		<news>- code refactor</news>
 	</extension>
 </addon>
